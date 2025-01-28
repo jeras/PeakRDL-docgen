@@ -1,3 +1,19 @@
+```
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install --upgrade pip
+python3 -m pip install systemrdl-compiler
+python3 -m pip install jinja2
+
+# development install of project
+python -m pip install -e ../
+
+# run test
+peakrdl markdown .rdl -o output_file.md
+```
+
+# Plan
+
 I am planning to work on this problem, and a few other features:
 
 - array unrolling to be made optional,
@@ -93,6 +109,4 @@ It wold probably make sense to find a new name for such a combined tool?
 - PeakRDL-TextDoc,
 - PeakRDL-DocText,
 - PeakRDL-DocGen.
-
-
 

@@ -12,7 +12,7 @@ python -m pip install -e ../
 peakrdl markdown .rdl -o output_file.md
 ```
 
-# Plan
+# Ideas
 
 I am planning to work on this problem, and a few other features:
 
@@ -20,7 +20,7 @@ I am planning to work on this problem, and a few other features:
 - linking between table element and its description section,
 - support for Markdown, AsciiDoc, reStructuredText, by choosing a Jinja template,
 
-## Array unrolling
+## Multiple instances and array instances
 
 ### Inspiration
 
@@ -29,30 +29,36 @@ I tried to find some data sheets containing a register map to be used as inspira
 1. [Zynq UltraScale+ Devices Register Reference](https://docs.amd.com/r/en-US/ug1087-zynq-ultrascale-registers/Overview)
 2. [RP2350 Datasheet](https://datasheets.raspberrypi.com/rp2350/rp2350-datasheet.pdf) chapter _2.2. Address Map_
 
+#### Xilinx
+
 In the Xilinx document I noticed the following:
 
 1. The following hierarchy is used:
 
-   _x_ Top `regmap` containing a table of `regfile` instances with links to sections _x.y_ for each `regfile` component definition/description.
-   _x.y_ For each `regfile` a table of `reg` instances with links to sections _x.y.z_ for each `reg` component definition/description.
-   _x.y.z_ For each `reg` a table of `field` instances, without links, the description is part of the table.
+   - _x_ Top `addrmap` containing a table of `regfile` instances with links to sections _x.y_ for each `regfile` component definition/description.
+   - _x.y_ For each `regfile` a table of `reg` instances with links to sections _x.y.z_ for each `reg` component definition/description.
+   - _x.y.z_ For each `reg` a table of `field` instances, without links, the description is part of the table.
 
-2. Arrays of `regmap` and `reg` instances are **unrolled** inside tables.
+   This hierarchy avoids mixing different component types on the same hierarchical level,
+   For example a `addrmap` or `regfile` containing a mix of both `regfile` and `reg` instances.
+   This approach reduces the number of complex interactions within a documentation generator.
+
+2. Arrays of `regfile` and `reg` instances are **unrolled** inside tables.
    There might be cases, where an array range is used [0:N-1], but I did not see any yet.
    The arrays were of length around 4, some of length 16.
 
 3. There are two types of unrolling:
 
-   1. In case the `regmap` and `reg` instances share the same definition/description section
+   1. In case the `regfile` and `reg` instances share the same definition/description section
       like [ZDMA module](https://docs.amd.com/r/en-US/ug1087-zynq-ultrascale-registers/ZDMA-Module)
       are appended the `n` suffix (no separator, index) in tables.
 
-      In this case, there is also a list of _base addresse_ for all `regmap` instances,
-      and a list of _absolute address_ for the same `reg` in all `regmap` instances.
+      In this case, there is also a list of _base address_ for all `regfile` instances,
+      and a list of _absolute address_ for the same `reg` in all `regfile` instances.
 
       https://docs.amd.com/r/en-US/ug1087-zynq-ultrascale-registers/ZDMA_ERR_CTRL-ZDMA-Register
 
-   2. Some `regmap` arrays use the `_n` suffix (`_` separator and index) and also link to separate definitions.
+   2. Some `regfile` arrays use the `_n` suffix (`_` separator and index) and also link to separate definitions.
       For example `CORESIGHT_A53_CTI_0`/`1`/`2`/`3`.
 
       It seems the use of the suffix is not strict, since some registers have
@@ -60,16 +66,29 @@ In the Xilinx document I noticed the following:
 
       https://docs.amd.com/r/en-US/ug1087-zynq-ultrascale-registers/CTIINEN0-A53_CTI_0-Register
 
-   I did not check yet, whether the repeated definitions for apparently identical `regmap`/`reg` instances
+   I did not check yet, whether the repeated definitions for apparently identical `regfile`/`reg` instances
    also have identical descriptions, but it appears they do.
-   The _base addresse_ for `regmap` and _absolute address_ for `reg` are distinct as expected.
+   The _base address_ for `regfile` and _absolute address_ for `reg` are distinct as expected.
 
    There are also cases with indexes which are not arrays.
    Like control registers which do not fit into 32-bits and are therefore split into CTRL0, CTRL1.
 
    https://docs.amd.com/r/en-US/ug1087-zynq-ultrascale-registers/ZDMA_CH_CTRL0-ZDMA-Register
 
-### Optional unrolling
+#### Raspberry PI
+
+An example of multiple instances of the same `regfile` would be the 3 PIO instances
+within the AHB `, see section _2.2.5. AHB Registers_.
+All three instances link to the same PIO documentation.
+
+At the end of the PIO documentation there is section _11.7. List of Registers_.
+At the beginning of the section are again listed the base addresses for each PIO instance.
+Curiously this part of the document was not updated to list 3 PIO compared to the old chip with just 2 PIO.
+
+The documentation for individual registers does not list the absolute address for each PIO instance,
+instead just a an offset is provided.
+
+### Proposed solutions
 
 The two different cases of array unrolling in the Xilinx document seem to be related to two approaches:
 

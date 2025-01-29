@@ -90,12 +90,13 @@ instead just a an offset is provided.
 
 ### Proposed solutions
 
-The two different cases of array unrolling in the Xilinx document seem to be related to two approaches:
-
-- actual instance arrays, resulting in automated indexing and shared definitions,
-- multiple instances of the same component with manual indexing resulting in separate definition sections.
-
-
+1. By default do not duplicate component description sections for multiple instances or arrays.
+   This should be straight forward as long as the the instances are within the same parent.
+   To avoid special accommodations for parameters, each parameterization shall have a separate section.
+2. By default unroll all arrays up to a threshold (could be 4 or 8 by default provided from CLI).
+3. Within the description for a duplicated component optionally provide base/absolute addresses
+   for each instance array element. For arrays only up to the array unrolling threshold.
+4. Provide user defined properties for duplication, unrolling, that can be applied to each instance separately.
 
 ## Linking between table element and its description section
 
@@ -107,7 +108,7 @@ are constructed from the header text, and this would not work well if there are
 multiple headers with the same text.
 Than I noticed at least GitHub is appending an additional index (`-n`)
 to the `n`-th heading with the same text.
-So it would be extra work to track this indes, but it is doable.
+So it would be extra work to track this index, but it is doable.
 
 AsciiDoc provides the [ID Attribute](https://docs.asciidoctor.org/asciidoc/latest/attributes/id/)
 which provides an unique path for links.
@@ -129,3 +130,9 @@ It wold probably make sense to find a new name for such a combined tool?
 - PeakRDL-DocText,
 - PeakRDL-DocGen.
 
+## Implementation plan
+
+1. example SystemRDL file showcasing desired features
+2. 
+4. add more Jinja2 templates
+5. update documentation 

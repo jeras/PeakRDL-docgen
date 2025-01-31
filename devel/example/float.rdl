@@ -61,4 +61,4 @@ reg bfloat16 {
     field {} sign     [15:15];
     field {} exponent [14: 7];
     field {} fraction [ 6: 0];
-}
+};

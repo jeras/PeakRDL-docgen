@@ -4,7 +4,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 // various reusable definitions
-`include "fixed.rdl"
+//`include "fixed.rdl"
 `include "float.rdl"
 
 // example regfile-s
@@ -27,11 +27,11 @@ addrmap example32 #(
     // accesswidth specifies the minimum width for read/write operations
     default accesswidth = REGWIDTH;
 
-    GPIO #(.REGWIDTH (REGWIDTH), .WIDTH ( 8)) GPIO8;
-    GPIO #(.REGWIDTH (REGWIDTH), .WIDTH (16)) GPIO16;
-    GPIO #(.REGWIDTH (REGWIDTH), .WIDTH (24)) GPIO24;
-    GPIO #(.REGWIDTH (REGWIDTH), .WIDTH (32)) GPIO32_1D [4];
-    GPIO #(.REGWIDTH (REGWIDTH), .WIDTH (32)) GPIO32_2D [3][2];
+    gpio #(.REGWIDTH (REGWIDTH), .WIDTH ( 8)) gpio8;
+    gpio #(.REGWIDTH (REGWIDTH), .WIDTH (16)) gpio16;
+    gpio #(.REGWIDTH (REGWIDTH), .WIDTH (24)) gpio24;
+    gpio #(.REGWIDTH (REGWIDTH), .WIDTH (32)) gpio32_1d [4];
+    gpio #(.REGWIDTH (REGWIDTH), .WIDTH (32)) gpio32_2d [3][2];
 
     binary32 binary32_0d_a;
     binary32 binary32_0d_b;
@@ -52,5 +52,5 @@ addrmap example32 #(
     control       ctrl_3;
     status        stat_3;
 
-    fixed #(.REGWIDTH (REGWIDTH), .WIDTH (24)) DATATYPES;
+    example_fixed #(.REGWIDTH (REGWIDTH), .WIDTH (24)) DATATYPES;
 };

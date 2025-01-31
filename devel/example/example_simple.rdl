@@ -7,7 +7,7 @@ reg simple32 #(
     longint unsigned WIDTH = 64
 ){
     name = "simple 32-bit register";
-    name = "Simple 32-bit register, containing bit vector [WIDTH-1:0].";
+    desc = "Simple 32-bit register, containing bit vector [WIDTH-1:0].";
     regwidth = 32;
     field {
     } val [WIDTH];
@@ -17,7 +17,7 @@ reg simple64 #(
     longint unsigned WIDTH = 64
 ){
     name = "simple 64-bit register";
-    name = "Simple 64-bit register, containing bit vector [WIDTH-1:0].";
+    desc = "Simple 64-bit register, containing bit vector [WIDTH-1:0].";
     regwidth = 64;
     field {
     } val [WIDTH];
@@ -27,7 +27,7 @@ reg simple128 #(
     longint unsigned WIDTH = 128
 ){
     name = "simple 128-bit register";
-    name = "Simple 128-bit register, containing bit vector [WIDTH-1:0].";
+    desc = "Simple 128-bit register, containing bit vector [WIDTH-1:0].";
     regwidth = 128;
     field {
     } val [WIDTH];

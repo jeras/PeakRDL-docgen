@@ -9,7 +9,7 @@ python3 -m pip install jinja2
 python -m pip install -e ../
 
 # run test
-peakrdl markdown .rdl -o output_file.md
+peakrdl markdown example/example32.rdl -o example/example32.md
 ```
 
 # Ideas

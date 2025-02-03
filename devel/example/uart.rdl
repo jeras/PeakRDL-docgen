@@ -63,7 +63,7 @@ regfile uart #(
         field {
             sw = w; hw = r;
         } data [DATA_WIDTH];
-    } rx_data @0x00;
+    } rx_data @0x20;
 
     reg {
         name = "RX FIFO status";
@@ -71,7 +71,7 @@ regfile uart #(
         field {
             sw = r; hw = w;
         } status [COUNTER_WIDTH];
-    } rx_status @0x04;
+    } rx_status @0x24;
 
     reg {
         name = "RX baudrate";
@@ -79,7 +79,7 @@ regfile uart #(
         field {
             sw = w; hw = r;
         } baudrate [BAUDRATE_WIDTH] = 0;
-    } rx_baudrate @0x08;
+    } rx_baudrate @0x28;
 
     reg {
         name = "RX interrupt trigger level";
@@ -87,5 +87,5 @@ regfile uart #(
         field {
             sw = w; hw = r;
         } cnt [COUNTER_WIDTH];
-    } rx_irq_level @0x10;
+    } rx_irq_level @0x30;
 };
